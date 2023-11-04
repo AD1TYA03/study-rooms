@@ -1,0 +1,34 @@
+# Ignore Node.js modules
+node_modules
+
+# Ignore environment configuration files (contains sensitive data)
+.env
+
+# Ignore log files
+logs/
+*.log
+
+# Ignore user-specific files
+npm-debug.log*
+
+# Ignore macOS-specific files
+.DS_Store
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore editor-specific temporary files
+*~
+
+# Ignore build and compiled files
+/dist/
+/build/
+
+# Ignore local development files
+.env.local
+
+# Ignore npm package-lock files
+package-lock.json
+
+# Ignore any files in the .gitignore file itself
+!.gitignore

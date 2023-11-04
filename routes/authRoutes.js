@@ -1,7 +1,13 @@
+// routes/authRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 
-router.use('/', authController);
+// Register a new user
+router.post('/register', authController.register);
+
+// Log in and receive a JWT token
+router.post('/login', authController.login);
 
 module.exports = router;
