@@ -1,22 +1,37 @@
-// authMiddleware.js
-
+const express = require('express');
+const app = express();
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth'); // Import your JWT secret from the config
+const User = require('../models/User');
+require('dotenv').config();
+const secretKey = process.env.SECRET_KEY;
 
-const authMiddleware = (req, res, next) => {
-  const token = req.header('x-auth-token');
+// Middleware to verify JWT
+const verifyToken = (req, res, next) => {
+  const token = req.headers['authorization'];
 
   if (!token) {
-    return res.status(401).json({ message: 'Access denied. No token provided.' });
+    return res.status(403).json({ error: 'Token not provided' });
   }
 
-  try {
-    const decoded = jwt.verify(token, config.secret);
-    req.user = decoded;
+  jwt.verify(token, secretKey, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    // Fetch the user based on the user ID stored in the token
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    // Attach the user to the request for further use
+    req.user = user;
     next();
-  } catch (err) {
-    return res.status(400).json({ message: 'Invalid token.' });
-  }
+  });
 };
 
-module.exports = authMiddleware;
+// Example protected route
+app.get('/protected', verifyToken, (req, res) => {
+  res.json({ message: 'This route is protected and only accessible with a valid token' });
+});

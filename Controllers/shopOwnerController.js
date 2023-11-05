@@ -4,21 +4,23 @@ const Room = require('../models/Room');
 
 // Function to register a new shop listing
 const registerShop = async (req, res) => {
+  const { name, location, capacity , isAvailable } = req.body;
   try {
-    const { shopName, location, capacity } = req.body;
+    (isAvailable==false)?isAvailable=false:isAvailable=true;
 
     // Create a new shop listing
-    const shop = new Shop({
-      shopName,
+    const room = new Room({
+      name,
       location,
       capacity,
-      // Add other properties based on your requirements
+      isAvailable,
+      
     });
 
     // Save the shop listing to the database
-    await Room.save();
+    await room.save();
 
-    res.json({ message: 'Shop listing created successfully' });
+    res.json({ message: `Shop listing created successfully ${req.body}` });
   } catch (error) {
     res.status(500).json({ error: 'Failed to register the shop listing' });
   }
@@ -27,3 +29,9 @@ const registerShop = async (req, res) => {
 module.exports = {
   registerShop,
 };
+
+
+
+
+
+

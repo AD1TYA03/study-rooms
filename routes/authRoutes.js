@@ -5,9 +5,9 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 
 // Register a new user
-router.post('/register', authController.register);
+router.post('/register', authController.registerUser);
 
 // Log in and receive a JWT token
-router.post('/login', authController.login);
+router.post('/login', authController.loginUser);
 
 module.exports = router;

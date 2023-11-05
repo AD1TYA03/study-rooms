@@ -1,20 +1,23 @@
 // services/roomService.js
 
-const Room = require('../models/Room'); // Import your Room model
+// Import your Room model
+const Room = require('../models/Room');
 
 // Function to list available rooms
-const listRooms = async () => {
+const listRooms = async (req, res) => {
   try {
-    // Retrieve a list of available rooms from your database
-    const rooms = await Room.find({ isAvailable: true });
+   
+    const rooms = await Room.find({isAvailable: true});
 
-    // Filtering can be added here
-
-    return rooms;
+    res.json(rooms);
   } catch (error) {
-    throw error; 
+    console.error('Error listing rooms:', error);
+    res.status(500).json({ error: 'Failed to list rooms' });
   }
 };
+
+
+
 
 
 
@@ -44,10 +47,7 @@ const bookRoom = async () => {
     await room.save();
 
     // Return a success message or confirmation
-    return 'Room booked successfully';
-
-
-      
+    return 'Room booked successfully';    
 }
 catch (error) {
     throw error; // Handle or log the error as needed
